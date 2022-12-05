@@ -11,6 +11,7 @@ export { default as Register } from "./Register/Register";
 export { default as TextbookInput } from "./Register/TextbookInput";
 export { default as TextbookMenu } from "./Register/TextbookMenu";
 export { default as EditTextbook } from "./Register/EditTextbook";
+export { default as DeleteTextbook } from "./Register/DeleteDialog";
 
 // Post component
 export { default as Posts } from "./Post/Posts";

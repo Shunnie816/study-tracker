@@ -10,6 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
+import { DeleteTextbook } from "../index";
 import axios from "axios";
 
 function SimpleDialog(props) {
@@ -17,14 +18,6 @@ function SimpleDialog(props) {
 
   const handleClose = () => {
     onClose();
-  };
-
-  // 教材の削除
-  const deleteTextbook = (id) => {
-    const url = `http://localhost:3001/textbook/${id}`;
-    axios.delete(url).then((response) => {
-      handleClose();
-    });
   };
 
   // 教材名の編集
@@ -54,6 +47,7 @@ function SimpleDialog(props) {
             <TextField
               id="outlined-basic"
               label="教材名を入力"
+              defaultValue={props.data.name}
               variant="outlined"
               onInput={props.handleChange}
             />
@@ -78,15 +72,7 @@ function SimpleDialog(props) {
             >
               編集を登録
             </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              size="small"
-              sx={{ fontSize: "0.8rem" }}
-              onClick={(e) => deleteTextbook(props.data.id, e)}
-            >
-              教材を削除
-            </Button>
+            <DeleteTextbook data={props.data} />
           </Stack>
         </ListItem>
       </List>
