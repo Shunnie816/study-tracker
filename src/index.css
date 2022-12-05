@@ -1,0 +1,62 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+li {
+  list-style: none;
+}
+
+ol {
+  margin: 0;
+  padding-left: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* Header */
+.headerMenu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Report */
+/* 記録確定ボタン */
+.button {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem 3.8rem;
+}
+
+/* Register */
+.registeredBook {
+  margin: 0 0.7rem;
+}
+
+.textBookList {
+  height: 240px;
+  overflow: auto;
+}
+
+/* post */
+.post {
+  display: flex;
+  justify-content: space-between;
+}
+
+.totalTime {
+  font-size: 1.4rem;
+  margin-left: 0.5rem;
+}
