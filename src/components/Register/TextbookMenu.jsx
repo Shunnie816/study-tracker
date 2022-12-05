@@ -2,9 +2,7 @@ import React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import DeleteIcon from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
+import { EditTextbook } from "../index";
 
 function TextbookMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -46,18 +44,8 @@ function TextbookMenu(props) {
         }}
         sx={{ padding: 0 }}
       >
-        <MenuItem
-          onClick={handleClose}
-          sx={{ padding: 0, height: "0.6rem", overflow: "hidden" }}
-        >
-          <Tooltip title="Delete">
-            <IconButton
-              sx={{ padding: "0.1rem" }}
-              onClick={(e) => props.delete(props.data.id, e)}
-            >
-              <DeleteIcon sx={{ fontSize: "0.8rem" }} />
-            </IconButton>
-          </Tooltip>
+        <MenuItem sx={{ padding: 0, height: "0.6rem", overflow: "hidden" }}>
+          <EditTextbook data={props.data} delete={props.delete} />
         </MenuItem>
       </Menu>
     </div>

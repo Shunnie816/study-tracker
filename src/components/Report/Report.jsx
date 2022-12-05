@@ -69,8 +69,6 @@ function BoxSx(props) {
         >
           <Time time={props.time} onSelect={props.onSelect} />
           <Textbook
-            // book={props.book}
-            // setBook={props.setBook}
             data={props.data}
             setData={props.setData}
             bookId={props.bookId}
