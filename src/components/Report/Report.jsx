@@ -1,4 +1,5 @@
 import React from "react";
+import { useForm, FormProvider } from "react-hook-form";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
@@ -8,6 +9,10 @@ import "../../index.css";
 import axios from "axios";
 
 function BoxSx(props) {
+  // バリデーションチェック用のメソッド
+  const useFormMethods = useForm();
+  const { handleSubmit } = useFormMethods;
+
   // 入力を確定してフィールドを初期値に戻す
   const commitData = (event) => {
     // 投稿時の今日の日付
@@ -36,7 +41,6 @@ function BoxSx(props) {
       })
       .then((response) => {
         alert("学習記録完了");
-        console.log("教材のid: " + bookId);
         event.preventDefault();
       });
     // 初期値に戻す
@@ -67,22 +71,24 @@ function BoxSx(props) {
             borderRadius: 1,
           }}
         >
-          <Time time={props.time} onSelect={props.onSelect} />
-          <Textbook
-            data={props.data}
-            setData={props.setData}
-            bookId={props.bookId}
-            setId={props.setId}
-          />
-          <TextInput
-            content={props.content}
-            inputContent={props.inputContent}
-          />
-          <div className="button">
-            <Button variant="contained" onClick={commitData}>
-              確定
-            </Button>
-          </div>
+          <FormProvider {...useFormMethods}>
+            <Time time={props.time} onSelect={props.onSelect} />
+            <Textbook
+              data={props.data}
+              setData={props.setData}
+              bookId={props.bookId}
+              setId={props.setId}
+            />
+            <TextInput
+              content={props.content}
+              inputContent={props.inputContent}
+            />
+            <div className="button">
+              <Button variant="contained" onClick={handleSubmit(commitData)}>
+                確定
+              </Button>
+            </div>
+          </FormProvider>
         </Box>
       </Container>
     </>

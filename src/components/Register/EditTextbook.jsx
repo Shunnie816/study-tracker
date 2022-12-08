@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -14,6 +15,12 @@ import { DeleteTextbook } from "../index";
 import axios from "axios";
 
 function SimpleDialog(props) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   const { onClose, open } = props;
 
   const handleClose = () => {
@@ -44,13 +51,31 @@ function SimpleDialog(props) {
             noValidate
             autoComplete="off"
           >
-            <TextField
-              id="outlined-basic"
-              label="教材名を入力"
-              defaultValue={props.data.name}
-              variant="outlined"
-              onInput={props.handleChange}
-            />
+            {/* 入力エラーの有無で表示するフォームを分岐 */}
+            {!errors.textbookEdit ? (
+              <TextField
+                id="outlined-basic"
+                label="教材名を入力"
+                defaultValue={props.data.name}
+                variant="outlined"
+                onInput={props.handleChange}
+                {...register("textbookEdit", {
+                  required: "教材名を入力してください",
+                })}
+              />
+            ) : (
+              errors.textbookEdit?.message && (
+                <TextField
+                  error
+                  id="outlined-basic"
+                  label="教材名を入力"
+                  defaultValue={props.data.name}
+                  variant="outlined"
+                  onInput={props.handleChange}
+                  helperText={errors.textbookEdit.message}
+                />
+              )
+            )}
           </Box>
         </ListItem>
       </List>
@@ -68,7 +93,7 @@ function SimpleDialog(props) {
               color="primary"
               size="small"
               sx={{ fontSize: "0.8rem" }}
-              onClick={(e) => handleUpdate(props.data.id, e)}
+              onClick={handleSubmit((e) => handleUpdate(props.data.id, e))}
             >
               編集を登録
             </Button>
