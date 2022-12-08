@@ -16,7 +16,7 @@ function Posts(props) {
       const dataset = response.data;
       props.setData(dataset);
     });
-  }, []);
+  }, [props.data]);
 
   useLayoutEffect(() => {
     axios.get("http://localhost:3001/textbook").then((response) => {

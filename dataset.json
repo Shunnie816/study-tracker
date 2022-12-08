@@ -9,12 +9,16 @@
       "name": "数学"
     },
     {
-      "name": "国語",
-      "id": 3
-    },
-    {
       "name": "世界史",
       "id": 6
+    },
+    {
+      "name": "国語",
+      "id": 7
+    },
+    {
+      "name": "日本史",
+      "id": 8
     }
   ],
   "posts": [
@@ -67,22 +71,11 @@
       "month": 12,
       "day": 8,
       "hours": 15,
-      "minute": 29,
+      "minute": 54,
       "time": 35,
-      "bookId": 2,
-      "content": "ffff",
+      "bookId": 8,
+      "content": "ｓｓｓｓ",
       "id": 5
-    },
-    {
-      "year": 2022,
-      "month": 12,
-      "day": 8,
-      "hours": 15,
-      "minute": 37,
-      "time": 35,
-      "bookId": 3,
-      "content": "ｆｆｆｆ",
-      "id": 6
     }
   ]
 }

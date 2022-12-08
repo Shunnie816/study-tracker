@@ -41,7 +41,7 @@ function BoxSx(props) {
       })
       .then((response) => {
         alert("学習記録完了");
-        event.preventDefault();
+        // event.preventDefault();
       });
     // 初期値に戻す
     props.onSelect("");

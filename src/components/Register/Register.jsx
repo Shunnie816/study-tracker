@@ -17,7 +17,7 @@ function Register(props) {
     const name = props.value;
     axios.post("http://localhost:3001/textbook", { name }).then((response) => {
       alert("教材登録完了");
-      event.preventDefault();
+      // event.preventDefault();
     });
 
     props.onSelect("");
@@ -34,7 +34,7 @@ function Register(props) {
       const dataset = response.data;
       props.setData(dataset);
     });
-  });
+  }, [props.data]);
 
   return (
     <>
