@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
 import { Time, Textbook, TextInput } from "../index";
 import "../../index.css";
 import axios from "axios";
@@ -12,6 +13,10 @@ function BoxSx(props) {
   // バリデーションチェック用のメソッド
   const useFormMethods = useForm();
   const { handleSubmit } = useFormMethods;
+
+  // アラート表示用のstate
+  const [alert, setAlert] = useState(false);
+  const [open, setOpen] = useState(false);
 
   // 入力を確定してフィールドを初期値に戻す
   const commitData = (event) => {
@@ -40,7 +45,8 @@ function BoxSx(props) {
         content,
       })
       .then((response) => {
-        alert("学習記録完了");
+        setAlert(true);
+        setOpen(true);
         // event.preventDefault();
       });
     // 初期値に戻す
@@ -83,6 +89,19 @@ function BoxSx(props) {
               content={props.content}
               inputContent={props.inputContent}
             />
+            {alert && open ? (
+              <Alert
+                severity="success"
+                sx={{ width: "80%", margin: "0 0.7rem" }}
+                onClose={() => {
+                  setOpen(false);
+                }}
+              >
+                学習記録完了!
+              </Alert>
+            ) : (
+              <></>
+            )}
             <div className="button">
               <Button variant="contained" onClick={handleSubmit(commitData)}>
                 確定
