@@ -6,9 +6,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-import { TextbookInput, TextbookMenu } from "../index";
+import { TextbookInput, TextbookMenu, db } from "../index";
 import "../../index.css";
 import axios from "axios";
+import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 
 function Register(props) {
   // バリデーションチェック用
@@ -20,14 +21,21 @@ function Register(props) {
   const [open, setOpen] = useState(false);
 
   // 教材の登録
-  const dataInput = (event) => {
+  const dataInput = async (event) => {
     const name = props.value;
-    axios.post("http://localhost:3001/textbook", { name }).then((response) => {
-      setAlert(true);
-      setOpen(true);
-      // event.preventDefault();
-    });
+    // axios.post("http://localhost:3001/textbook", { name }).then((response) => {
+    //   setAlert(true);
+    //   setOpen(true);
+    // event.preventDefault();
+    // });
 
+    // props.onSelect("");
+
+    await addDoc(collection(db, "textbooks"), {
+      name: name,
+    });
+    setAlert(true);
+    setOpen(true);
     props.onSelect("");
   };
 
@@ -37,11 +45,20 @@ function Register(props) {
     axios.delete(url).then((response) => {});
   };
 
+  // 登録されている教材を取得
+  // useEffect(() => {
+  //   axios.get("http://localhost:3001/textbook").then((response) => {
+  //     const dataset = response.data;
+  //     props.setData(dataset);
+  //   });
+  // }, [props.data]);
+
+  // データの取得
   useEffect(() => {
-    axios.get("http://localhost:3001/textbook").then((response) => {
-      const dataset = response.data;
-      props.setData(dataset);
-    });
+    const docRef = doc(db, "textbooks", "name");
+    const docSnap = getDoc(docRef);
+    const dataset = docSnap.data();
+    props.setData(dataset);
   }, [props.data]);
 
   return (
@@ -83,7 +100,7 @@ function Register(props) {
             )}
             <div className="button">
               <Button variant="contained" onClick={handleSubmit(dataInput)}>
-                登録
+                登録する
               </Button>
             </div>
           </FormProvider>

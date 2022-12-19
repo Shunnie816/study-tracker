@@ -18,3 +18,6 @@ export { default as Posts } from "./Post/Posts";
 export { default as Post } from "./Post/Post";
 export { default as StudyTime } from "./Post/StudyTime";
 export { default as DeleteAlert } from "./Post/DeleteDialog";
+
+// firebase
+export { db } from "../firebase/config";
