@@ -54,12 +54,12 @@ function Register(props) {
   // }, [props.data]);
 
   // データの取得
-  useEffect(() => {
+  (async function () {
     const docRef = doc(db, "textbooks", "name");
     const docSnap = getDoc(docRef);
-    const dataset = docSnap.data();
+    const dataset = await docSnap.data();
     props.setData(dataset);
-  }, [props.data]);
+  })();
 
   return (
     <>
