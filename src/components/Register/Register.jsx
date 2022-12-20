@@ -56,10 +56,14 @@ function Register(props) {
   // データの取得
   (async function () {
     const docRef = doc(db, "textbooks", "name");
-    const docSnap = getDoc(docRef);
-    const dataset = await docSnap.data();
+    const docSnap = await getDoc(docRef);
+    const dataset = docSnap.data();
     props.setData(dataset);
+    console.log("docSnap: " + docSnap);
+    console.log("dataset: " + dataset);
   })();
+
+  console.log("props.data: " + props.data);
 
   return (
     <>
@@ -107,11 +111,15 @@ function Register(props) {
           <div className="registeredBook">
             <h2>登録済みの教材</h2>
             <ul className="textBookList">
-              {props.data.map((textbook, index) => (
-                <ol key={textbook.id}>
-                  <TextbookMenu data={textbook} delete={deleteTextbook} />
-                </ol>
-              ))}
+              {props.data ? (
+                props.data.map((textbook, index) => (
+                  <ol key={textbook.id}>
+                    <TextbookMenu data={textbook} delete={deleteTextbook} />
+                  </ol>
+                ))
+              ) : (
+                <h3>教材データがありません</h3>
+              )}
             </ul>
           </div>
         </Box>
