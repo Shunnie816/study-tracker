@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,7 +9,7 @@ import Alert from "@mui/material/Alert";
 import { TextbookInput, TextbookMenu, db } from "../index";
 import "../../index.css";
 import axios from "axios";
-import { collection, addDoc, doc, getDoc } from "firebase/firestore";
+import { collection, addDoc, doc, getDocs, getDoc } from "firebase/firestore";
 
 function Register(props) {
   // バリデーションチェック用
@@ -45,7 +45,7 @@ function Register(props) {
     axios.delete(url).then((response) => {});
   };
 
-  // 登録されている教材を取得
+  // 登録されている教材を取得(json)
   // useEffect(() => {
   //   axios.get("http://localhost:3001/textbook").then((response) => {
   //     const dataset = response.data;
@@ -53,17 +53,21 @@ function Register(props) {
   //   });
   // }, [props.data]);
 
-  // データの取得
+  // firesotreからデータの取得
   (async function () {
-    const docRef = doc(db, "textbooks", "name");
-    const docSnap = await getDoc(docRef);
-    const dataset = docSnap.data();
-    props.setData(dataset);
-    console.log("docSnap: " + docSnap);
-    console.log("dataset: " + dataset);
-  })();
+    const docSnaps = await getDocs(collection(db, "textbooks"));
+    const textbooks = [];
 
-  console.log("props.data: " + props.data);
+    docSnaps.forEach(async (book) => {
+      const docRef = doc(db, "textbooks", book.id);
+      const docSnap = await getDoc(docRef);
+      const dataset = docSnap.data();
+
+      // idとnameを持つオブジェクトとして配列textbooksにデータを格納してからステートdataに渡す(常にdataが更新されて処理が重そう)
+      textbooks.push({ id: book.id, name: dataset.name });
+      props.setData(textbooks);
+    });
+  })();
 
   return (
     <>

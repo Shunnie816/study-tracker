@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useLayoutEffect } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
@@ -7,23 +7,64 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import "../../index.css";
-import { Post, StudyTime } from "../index";
-import axios from "axios";
+import { Post, StudyTime, db } from "../index";
+// import axios from "axios";
+import { collection, doc, getDocs, getDoc } from "firebase/firestore";
 
 function Posts(props) {
-  useEffect(() => {
-    axios.get("http://localhost:3001/posts").then((response) => {
-      const dataset = response.data;
-      props.setData(dataset);
-    });
-  }, [props.data]);
+  // useEffect(() => {
+  //   axios.get("http://localhost:3001/posts").then((response) => {
+  //     const dataset = response.data;
+  //     props.setData(dataset);
+  //   });
+  // }, [props.data]);
 
-  useLayoutEffect(() => {
-    axios.get("http://localhost:3001/textbook").then((response) => {
-      const dataset = response.data;
-      props.setBook(dataset);
+  // useLayoutEffect(() => {
+  //   axios.get("http://localhost:3001/textbook").then((response) => {
+  //     const dataset = response.data;
+  //     props.setBook(dataset);
+  //   });
+  // }, []);
+
+  // firesotreからpostsデータの取得
+  (async function () {
+    const docSnaps = await getDocs(collection(db, "posts"));
+    const posts = [];
+
+    docSnaps.forEach(async (post) => {
+      const docRef = doc(db, "posts", post.id);
+      const docSnap = await getDoc(docRef);
+      const dataset = docSnap.data();
+
+      // オブジェクトとして配列postsにデータを格納してからステートdataに渡す(常にdataが更新されて処理が重そう)
+      posts.push({
+        bookId: dataset.bookId,
+        time: dataset.time,
+        year: dataset.year,
+        month: dataset.month,
+        day: dataset.day,
+        hours: dataset.hours,
+        minute: dataset.minute,
+      });
+      props.setData(posts);
     });
-  }, []);
+  })();
+
+  // firesotreからtextbooksデータの取得
+  (async function () {
+    const docSnaps = await getDocs(collection(db, "textbooks"));
+    const textbooks = [];
+
+    docSnaps.forEach(async (book) => {
+      const docRef = doc(db, "textbooks", book.id);
+      const docSnap = await getDoc(docRef);
+      const dataset = docSnap.data();
+
+      // idとnameを持つオブジェクトとして配列textbooksにデータを格納してからステートdataに渡す(常にdataが更新されて処理が重そう)
+      textbooks.push({ id: book.id, name: dataset.name });
+      props.setBook(textbooks);
+    });
+  })();
 
   //   textbookデータをオブジェクトの入った配列として取得
   const books = props.book.map((textbook, index) => ({

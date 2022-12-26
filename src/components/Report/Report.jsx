@@ -5,9 +5,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-import { Time, Textbook, TextInput } from "../index";
+import { Time, Textbook, TextInput, db } from "../index";
 import "../../index.css";
-import axios from "axios";
+// import axios from "axios";
+import { collection, addDoc } from "firebase/firestore";
 
 function BoxSx(props) {
   // バリデーションチェック用のメソッド
@@ -19,7 +20,7 @@ function BoxSx(props) {
   const [open, setOpen] = useState(false);
 
   // 入力を確定してフィールドを初期値に戻す
-  const commitData = (event) => {
+  const commitData = async (event) => {
     // 投稿時の今日の日付
     const today = new Date();
     const year = today.getFullYear();
@@ -33,22 +34,39 @@ function BoxSx(props) {
     const content = props.content;
     const bookId = props.bookId;
 
-    axios
-      .post("http://localhost:3001/posts", {
-        year,
-        month,
-        day,
-        hours,
-        minute,
-        time,
-        bookId,
-        content,
-      })
-      .then((response) => {
-        setAlert(true);
-        setOpen(true);
-        // event.preventDefault();
-      });
+    // axios
+    //   .post("http://localhost:3001/posts", {
+    //     year,
+    //     month,
+    //     day,
+    //     hours,
+    //     minute,
+    //     time,
+    //     bookId,
+    //     content,
+    //   })
+    //   .then((response) => {
+    //     setAlert(true);
+    //     setOpen(true);
+    //     // event.preventDefault();
+    //   });
+    // 初期値に戻す
+    // props.onSelect("");
+    // props.inputContent("");
+    // props.setId("");
+
+    await addDoc(collection(db, "posts"), {
+      year: year,
+      month: month,
+      day: day,
+      hours: hours,
+      minute: minute,
+      time: time,
+      bookId: bookId,
+      content: content,
+    });
+    setAlert(true);
+    setOpen(true);
     // 初期値に戻す
     props.onSelect("");
     props.inputContent("");
