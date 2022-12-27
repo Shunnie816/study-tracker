@@ -38,6 +38,7 @@ function Posts(props) {
 
       // オブジェクトとして配列postsにデータを格納してからステートdataに渡す(常にdataが更新されて処理が重そう)
       posts.push({
+        id: post.id,
         bookId: dataset.bookId,
         time: dataset.time,
         year: dataset.year,

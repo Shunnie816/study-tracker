@@ -4,7 +4,9 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-import axios from "axios";
+// import axios from "axios";
+import { db } from "../index";
+import { doc, deleteDoc } from "firebase/firestore";
 
 function SimpleDialog(props) {
   const { onClose, open } = props;
@@ -13,11 +15,14 @@ function SimpleDialog(props) {
     onClose();
   };
 
-  const deletePost = (id) => {
-    const url = `http://localhost:3001/posts/${id}`;
-    axios.delete(url).then((response) => {
-      handleClose();
-    });
+  const deletePost = async (id) => {
+    // const url = `http://localhost:3001/posts/${id}`;
+    // axios.delete(url).then((response) => {
+    //   handleClose();
+    // });
+
+    await deleteDoc(doc(db, "posts", id));
+    handleClose();
   };
 
   const post = props.data;

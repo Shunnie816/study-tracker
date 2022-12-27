@@ -4,7 +4,9 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-import axios from "axios";
+// import axios from "axios";
+import { db } from "../index";
+import { doc, deleteDoc } from "firebase/firestore";
 
 function SimpleDialog(props) {
   const { onClose, open } = props;
@@ -14,11 +16,14 @@ function SimpleDialog(props) {
   };
 
   // 教材の削除
-  const deleteTextbook = (id) => {
-    const url = `http://localhost:3001/textbook/${id}`;
-    axios.delete(url).then((response) => {
-      handleClose();
-    });
+  const deleteTextbook = async (id) => {
+    // const url = `http://localhost:3001/textbook/${id}`;
+    // axios.delete(url).then((response) => {
+    //   handleClose();
+    // });
+
+    await deleteDoc(doc(db, "textbooks", id));
+    handleClose();
   };
 
   return (

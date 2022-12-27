@@ -45,7 +45,7 @@ function TextbookMenu(props) {
         sx={{ padding: 0 }}
       >
         <MenuItem sx={{ padding: 0, height: "0.6rem", overflow: "hidden" }}>
-          <EditTextbook data={props.data} delete={props.delete} />
+          <EditTextbook data={props.data} />
         </MenuItem>
       </Menu>
     </div>

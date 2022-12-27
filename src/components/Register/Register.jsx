@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import { TextbookInput, TextbookMenu, db } from "../index";
 import "../../index.css";
-import axios from "axios";
+// import axios from "axios";
 import { collection, addDoc, doc, getDocs, getDoc } from "firebase/firestore";
 
 function Register(props) {
@@ -28,7 +28,6 @@ function Register(props) {
     //   setOpen(true);
     // event.preventDefault();
     // });
-
     // props.onSelect("");
 
     await addDoc(collection(db, "textbooks"), {
@@ -39,11 +38,14 @@ function Register(props) {
     props.onSelect("");
   };
 
-  // 登録されている教材を削除
-  const deleteTextbook = (id) => {
-    const url = `http://localhost:3001/textbook/${id}`;
-    axios.delete(url).then((response) => {});
-  };
+  // // 登録されている教材を削除
+  // const deleteTextbook = async(id) => {
+  //   // const url = `http://localhost:3001/textbook/${id}`;
+  //   // axios.delete(url).then((response) => { });
+
+  //   await deleteDoc(doc(db, "textbooks", id));
+
+  // };
 
   // 登録されている教材を取得(json)
   // useEffect(() => {
@@ -118,7 +120,7 @@ function Register(props) {
               {props.data ? (
                 props.data.map((textbook, index) => (
                   <ol key={textbook.id}>
-                    <TextbookMenu data={textbook} delete={deleteTextbook} />
+                    <TextbookMenu data={textbook} />
                   </ol>
                 ))
               ) : (
