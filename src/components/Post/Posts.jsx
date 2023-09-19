@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
@@ -9,15 +9,22 @@ import Typography from "@mui/material/Typography";
 import "../../index.css";
 import { Post, StudyTime, db } from "../index";
 import axios from "axios";
+import useBook from "../../contexts/useBook";
 // import { collection, doc, getDocs, getDoc } from "firebase/firestore";
 
-function Posts(props) {
+function Posts() {
+  //グローバルなstateを取得
+  const { textbook, setTextbook } = useBook();
+
+  //ローカルなstateを定義
+  const [postData, setPostData] = useState([]);
+
   //jsonからpostsデータを取得
   useEffect(() => {
     axios.get("http://localhost:3001/posts").then((response) => {
       const dataset = response.data;
       // console.log("posts:" + dataset);
-      props.setData(dataset);
+      setPostData(dataset);
     });
   }, []);
 
@@ -27,7 +34,7 @@ function Posts(props) {
     axios.get("http://localhost:3001/textbook").then((response) => {
       const dataset = response.data;
       // console.log("textbook:" + dataset);
-      props.setBook(dataset);
+      setTextbook(dataset);
     });
   }, []);
 
@@ -52,7 +59,7 @@ function Posts(props) {
   //       hours: dataset.hours,
   //       minute: dataset.minute,
   //     });
-  //     props.setData(posts);
+  //     setPostData(posts);
   //   });
   // })();
 
@@ -68,18 +75,18 @@ function Posts(props) {
 
   //     // idとnameを持つオブジェクトとして配列textbooksにデータを格納してからステートdataに渡す(常にdataが更新されて処理が重そう)
   //     textbooks.push({ id: book.id, name: dataset.name });
-  //     props.setBook(textbooks);
+  //     setTextbook(textbooks);
   //   });
   // })();
 
   //   textbookデータをオブジェクトの入った配列として取得
-  const books = props.book.map((textbook, index) => ({
+  const books = textbook.map((textbook, index) => ({
     id: textbook.id,
     name: textbook.name,
   }));
 
   //   postsデータをオブジェクトの入った配列として取得
-  const posts = props.data.map((post, index) => ({
+  const posts = postData.map((post, index) => ({
     bookId: post.bookId,
     time: post.time,
   }));
@@ -87,7 +94,7 @@ function Posts(props) {
   // 合計学習時間を求める
   const calcTotalTime = () => {
     let totalTime = 0;
-    props.data.map((post, index) => (totalTime += post.time));
+    postData.map((post, index) => (totalTime += post.time));
     return Math.floor(totalTime / 60) + "時間" + (totalTime % 60) + "分";
   };
 
@@ -115,14 +122,9 @@ function Posts(props) {
           }}
         >
           {/* 投稿を降順で表示 */}
-          {props.data
+          {postData
             .map((post, index) => (
-              <Post
-                data={post}
-                bookId={props.bookId}
-                books={books}
-                key={post.id}
-              />
+              <Post data={post} books={books} key={post.id} />
             ))
             .reverse()}
         </Box>
@@ -149,7 +151,7 @@ function Posts(props) {
                 教科別の学習時間
               </Typography>
               {/* 教材別学習時間を表示 */}
-              {props.book.map((textbook, index) => (
+              {textbook.map((textbook, index) => (
                 <StudyTime book={textbook} posts={posts} key={textbook.id} />
               ))}
             </CardContent>

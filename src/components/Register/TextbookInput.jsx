@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import AuthContext from "../../contexts/AuthContext";
+import useBook from "../../contexts/useBook";
 
-function TextbookInput(props) {
+function TextbookInput() {
+  //グローバルなstate管理
+  const { textbook, setTextbook } = useBook();
+
   const {
     register,
     formState: { errors },
   } = useFormContext();
 
   const handleChange = (event) => {
-    props.onSelect(event.target.value);
+    setTextbook(event.target.value);
   };
 
   return (
@@ -32,7 +37,7 @@ function TextbookInput(props) {
           label="教材名を入力"
           variant="outlined"
           onInput={handleChange}
-          value={props.value}
+          value={textbook}
           {...register("textbook", {
             required: "教材名が入力されていません。",
           })}
@@ -45,7 +50,7 @@ function TextbookInput(props) {
             label="教材名を入力"
             variant="outlined"
             onInput={handleChange}
-            value={props.value}
+            value={textbook}
             helperText={errors.textbook.message}
           />
         )

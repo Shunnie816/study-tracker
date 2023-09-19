@@ -9,9 +9,13 @@ import Alert from "@mui/material/Alert";
 import { TextbookInput, TextbookMenu, db } from "../index";
 import "../../index.css";
 import axios from "axios";
+import useBook from "../../contexts/useBook";
 // import { collection, addDoc, doc, getDocs, getDoc } from "firebase/firestore";
 
-function Register(props) {
+function Register() {
+  //グローバルなstateを取得する
+  const { textbook, setTextbook, dataBook, setDataBook } = useBook();
+
   // バリデーションチェック用
   const useFormMethods = useForm();
   const { handleSubmit } = useFormMethods;
@@ -25,7 +29,7 @@ function Register(props) {
     axios.get("http://localhost:3001/textbook").then((response) => {
       const dataset = response.data;
       // console.log("教材:" + dataset);
-      props.setData(dataset);
+      setDataBook(dataset);
     });
   }, []);
 
@@ -41,19 +45,19 @@ function Register(props) {
 
   //     // idとnameを持つオブジェクトとして配列textbooksにデータを格納してからステートdataに渡す(常にdataが更新されて処理が重そう)
   //     textbooks.push({ id: book.id, name: dataset.name });
-  //     props.setData(textbooks);
+  //     setDataBook(textbooks);
   //   });
   // })();
 
   // 教材の登録
   const dataInput = async (event) => {
-    const name = props.value;
+    const name = textbook;
     axios.post("http://localhost:3001/textbook", { name }).then((response) => {
       setAlert(true);
       setOpen(true);
       event.preventDefault();
     });
-    props.onSelect("");
+    setTextbook("");
 
     //firebaseへデータの登録
     // await addDoc(collection(db, "textbooks"), {
@@ -61,7 +65,7 @@ function Register(props) {
     // });
     setAlert(true);
     setOpen(true);
-    props.onSelect("");
+    setTextbook("");
   };
 
   // // 登録されている教材を削除
@@ -96,7 +100,7 @@ function Register(props) {
           }}
         >
           <FormProvider {...useFormMethods}>
-            <TextbookInput value={props.value} onSelect={props.onSelect} />
+            <TextbookInput />
             {alert && open ? (
               <Alert
                 severity="success"
@@ -119,8 +123,8 @@ function Register(props) {
           <div className="registeredBook">
             <h2>登録済みの教材</h2>
             <ul className="textBookList">
-              {props.data ? (
-                props.data.map((textbook, index) => (
+              {dataBook ? (
+                dataBook.map((textbook, index) => (
                   <ol key={textbook.id}>
                     <TextbookMenu data={textbook} />
                   </ol>
