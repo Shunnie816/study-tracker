@@ -6,7 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-import { TextbookInput, TextbookMenu, db } from "../index";
+import { TextbookInput, TextbookMenu } from "../index";
 import "../../index.css";
 import axios from "axios";
 import useBook from "../../contexts/useBook";
@@ -69,13 +69,13 @@ function Register() {
   };
 
   // // 登録されている教材を削除
-  const deleteTextbook = async (id) => {
-    const url = `http://localhost:3001/textbook/${id}`;
-    axios.delete(url).then((response) => {});
+  // const deleteTextbook = async (id) => {
+  //   const url = `http://localhost:3001/textbook/${id}`;
+  //   axios.delete(url).then((response) => {});
 
-    // firestore上のデータの削除
-    // await deleteDoc(doc(db, "textbooks", id));
-  };
+  // firestore上のデータの削除
+  // await deleteDoc(doc(db, "textbooks", id));
+  // };
 
   return (
     <>

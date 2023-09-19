@@ -7,7 +7,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import "../../index.css";
-import { Post, StudyTime, db } from "../index";
+import { Post, StudyTime } from "../index";
 import axios from "axios";
 import useBook from "../../contexts/useBook";
 // import { collection, doc, getDocs, getDoc } from "firebase/firestore";
