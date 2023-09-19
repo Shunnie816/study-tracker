@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -7,9 +7,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Select from "@mui/material/Select";
-import { db } from "../index";
-// import axios from "axios";
-import { collection, doc, getDocs, getDoc } from "firebase/firestore";
+// import { db } from "../index";
+import axios from "axios";
+// import { collection, doc, getDocs, getDoc } from "firebase/firestore";
 
 function TextbookSelect(props) {
   const {
@@ -21,27 +21,30 @@ function TextbookSelect(props) {
     props.setId(event.target.value);
   };
 
-  // useEffect(() => {
-  //   axios.get("http://localhost:3001/textbook").then((response) => {
-  //     const dataset = response.data;
-  //     props.setData(dataset);
-  //   });
-  // }, []);
-
-  (async function () {
-    const docSnaps = await getDocs(collection(db, "textbooks"));
-    const textbooks = [];
-
-    docSnaps.forEach(async (book) => {
-      const docRef = doc(db, "textbooks", book.id);
-      const docSnap = await getDoc(docRef);
-      const dataset = docSnap.data();
-
-      // idとnameを持つオブジェクトとして配列textbooksにデータを格納してからステートdataに渡す(常にdataが更新されて処理が重そう)
-      textbooks.push({ id: book.id, name: dataset.name });
-      props.setData(textbooks);
+  // jsonから教材を取得
+  useEffect(() => {
+    axios.get("http://localhost:3001/textbook").then((response) => {
+      const dataset = response.data;
+      // console.log(dataset);
+      props.setData(dataset);
     });
-  })();
+  }, []);
+
+  //firestoreからデータを取得
+  // (async function () {
+  //   const docSnaps = await getDocs(collection(db, "textbooks"));
+  //   const textbooks = [];
+
+  //   docSnaps.forEach(async (book) => {
+  //     const docRef = doc(db, "textbooks", book.id);
+  //     const docSnap = await getDoc(docRef);
+  //     const dataset = docSnap.data();
+
+  //     // idとnameを持つオブジェクトとして配列textbooksにデータを格納してからステートdataに渡す(常にdataが更新されて処理が重そう)
+  //     textbooks.push({ id: book.id, name: dataset.name });
+  //     props.setData(textbooks);
+  //   });
+  // })();
 
   const textbookData = props.data;
 

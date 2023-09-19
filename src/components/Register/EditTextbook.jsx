@@ -12,8 +12,8 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { DeleteTextbook, db } from "../index";
-// import axios from "axios";
-import { doc, setDoc } from "firebase/firestore";
+import axios from "axios";
+// import { doc, setDoc } from "firebase/firestore";
 
 function SimpleDialog(props) {
   const {
@@ -30,24 +30,34 @@ function SimpleDialog(props) {
 
   // 教材名の編集
   const handleUpdate = async (id) => {
-    // const url = `http://localhost:3001/textbook/${id}`;
-    // const name = props.value;
-    // axios.put(url, { name }).then((response) => {
-    //   handleClose();
-    // });
-
+    const url = `http://localhost:3001/textbook/${id}`;
     const name = props.value;
+
     // props.valueの初期値が空欄("")なので空欄で変更されないように分岐
     if (name === props.data.name || name === "") {
       handleClose();
       console.log("編集されていません");
     } else {
-      await setDoc(doc(db, "textbooks", id), {
-        name: name,
+      axios.put(url, { name }).then((response) => {
+        handleClose();
       });
       console.log("編集が実行されました");
       handleClose();
     }
+
+    //firestoreへ変更を反映させる
+    // const name = props.value;
+    // props.valueの初期値が空欄("")なので空欄で変更されないように分岐
+    // if (name === props.data.name || name === "") {
+    //   handleClose();
+    //   console.log("編集されていません");
+    // } else {
+    //   await setDoc(doc(db, "textbooks", id), {
+    //     name: name,
+    //   });
+    //   console.log("編集が実行されました");
+    //   handleClose();
+    // }
   };
 
   return (

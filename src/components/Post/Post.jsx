@@ -1,10 +1,10 @@
-import React from "react";
+import React, { memo } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { DeleteAlert } from "../index";
 
-function Post(props) {
+const Post = memo((props) => {
   const post = props.data;
 
   // 入力されたpost.bookIdと一致するidを持つオブジェクトをbooksから取り出す
@@ -18,7 +18,7 @@ function Post(props) {
         </Typography>
         <div className="post">
           <Typography variant="h6" component="div">
-            教材名：{textbook.name}
+            教材名：{textbook ? textbook.name : "教材が削除されています"}
           </Typography>
           <Typography variant="h6" component="div">
             時間：{post.time}分
@@ -31,6 +31,6 @@ function Post(props) {
       </CardContent>
     </Card>
   );
-}
+});
 
 export default Post;

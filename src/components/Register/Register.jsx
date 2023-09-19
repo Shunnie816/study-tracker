@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,8 +8,8 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import { TextbookInput, TextbookMenu, db } from "../index";
 import "../../index.css";
-// import axios from "axios";
-import { collection, addDoc, doc, getDocs, getDoc } from "firebase/firestore";
+import axios from "axios";
+// import { collection, addDoc, doc, getDocs, getDoc } from "firebase/firestore";
 
 function Register(props) {
   // バリデーションチェック用
@@ -20,56 +20,58 @@ function Register(props) {
   const [alert, setAlert] = useState(false);
   const [open, setOpen] = useState(false);
 
+  // 登録されている教材を取得(json)
+  useEffect(() => {
+    axios.get("http://localhost:3001/textbook").then((response) => {
+      const dataset = response.data;
+      // console.log("教材:" + dataset);
+      props.setData(dataset);
+    });
+  }, []);
+
+  // firesotreからデータの取得
+  // (async function () {
+  //   const docSnaps = await getDocs(collection(db, "textbooks"));
+  //   const textbooks = [];
+
+  //   docSnaps.forEach(async (book) => {
+  //     const docRef = doc(db, "textbooks", book.id);
+  //     const docSnap = await getDoc(docRef);
+  //     const dataset = docSnap.data();
+
+  //     // idとnameを持つオブジェクトとして配列textbooksにデータを格納してからステートdataに渡す(常にdataが更新されて処理が重そう)
+  //     textbooks.push({ id: book.id, name: dataset.name });
+  //     props.setData(textbooks);
+  //   });
+  // })();
+
   // 教材の登録
   const dataInput = async (event) => {
     const name = props.value;
-    // axios.post("http://localhost:3001/textbook", { name }).then((response) => {
-    //   setAlert(true);
-    //   setOpen(true);
-    // event.preventDefault();
-    // });
-    // props.onSelect("");
-
-    await addDoc(collection(db, "textbooks"), {
-      name: name,
+    axios.post("http://localhost:3001/textbook", { name }).then((response) => {
+      setAlert(true);
+      setOpen(true);
+      event.preventDefault();
     });
+    props.onSelect("");
+
+    //firebaseへデータの登録
+    // await addDoc(collection(db, "textbooks"), {
+    //   name: name,
+    // });
     setAlert(true);
     setOpen(true);
     props.onSelect("");
   };
 
   // // 登録されている教材を削除
-  // const deleteTextbook = async(id) => {
-  //   // const url = `http://localhost:3001/textbook/${id}`;
-  //   // axios.delete(url).then((response) => { });
+  const deleteTextbook = async (id) => {
+    const url = `http://localhost:3001/textbook/${id}`;
+    axios.delete(url).then((response) => {});
 
-  //   await deleteDoc(doc(db, "textbooks", id));
-
-  // };
-
-  // 登録されている教材を取得(json)
-  // useEffect(() => {
-  //   axios.get("http://localhost:3001/textbook").then((response) => {
-  //     const dataset = response.data;
-  //     props.setData(dataset);
-  //   });
-  // }, [props.data]);
-
-  // firesotreからデータの取得
-  (async function () {
-    const docSnaps = await getDocs(collection(db, "textbooks"));
-    const textbooks = [];
-
-    docSnaps.forEach(async (book) => {
-      const docRef = doc(db, "textbooks", book.id);
-      const docSnap = await getDoc(docRef);
-      const dataset = docSnap.data();
-
-      // idとnameを持つオブジェクトとして配列textbooksにデータを格納してからステートdataに渡す(常にdataが更新されて処理が重そう)
-      textbooks.push({ id: book.id, name: dataset.name });
-      props.setData(textbooks);
-    });
-  })();
+    // firestore上のデータの削除
+    // await deleteDoc(doc(db, "textbooks", id));
+  };
 
   return (
     <>
