@@ -1,7 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 import Typography from "@mui/material/Typography";
 
-function StudyTime(props) {
+const StudyTime = memo((props) => {
   // 同じbookIdを持つpostの学習時間を合計する
   const totalStudyTime = () => {
     const groupedBook = props.posts.filter(
@@ -31,6 +31,6 @@ function StudyTime(props) {
       )}
     </Typography>
   );
-}
+});
 
 export default StudyTime;

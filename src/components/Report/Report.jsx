@@ -7,8 +7,8 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import { Time, Textbook, TextInput, db } from "../index";
 import "../../index.css";
-// import axios from "axios";
-import { collection, addDoc } from "firebase/firestore";
+import axios from "axios";
+// import { collection, addDoc } from "firebase/firestore";
 
 function BoxSx(props) {
   // バリデーションチェック用のメソッド
@@ -34,43 +34,44 @@ function BoxSx(props) {
     const content = props.content;
     const bookId = props.bookId;
 
-    // axios
-    //   .post("http://localhost:3001/posts", {
-    //     year,
-    //     month,
-    //     day,
-    //     hours,
-    //     minute,
-    //     time,
-    //     bookId,
-    //     content,
-    //   })
-    //   .then((response) => {
-    //     setAlert(true);
-    //     setOpen(true);
-    //     // event.preventDefault();
-    //   });
-    // 初期値に戻す
-    // props.onSelect("");
-    // props.inputContent("");
-    // props.setId("");
-
-    await addDoc(collection(db, "posts"), {
-      year: year,
-      month: month,
-      day: day,
-      hours: hours,
-      minute: minute,
-      time: time,
-      bookId: bookId,
-      content: content,
-    });
-    setAlert(true);
-    setOpen(true);
+    axios
+      .post("http://localhost:3001/posts", {
+        year,
+        month,
+        day,
+        hours,
+        minute,
+        time,
+        bookId,
+        content,
+      })
+      .then((response) => {
+        setAlert(true);
+        setOpen(true);
+        // event.preventDefault();
+      });
     // 初期値に戻す
     props.onSelect("");
     props.inputContent("");
     props.setId("");
+
+    // firestoreへデータを追加
+    // await addDoc(collection(db, "posts"), {
+    //   year: year,
+    //   month: month,
+    //   day: day,
+    //   hours: hours,
+    //   minute: minute,
+    //   time: time,
+    //   bookId: bookId,
+    //   content: content,
+    // });
+    // setAlert(true);
+    // setOpen(true);
+    // 初期値に戻す
+    // props.onSelect("");
+    // props.inputContent("");
+    // props.setId("");
   };
 
   return (
