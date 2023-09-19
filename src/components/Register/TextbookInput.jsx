@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import AuthContext from "../../contexts/AuthContext";
 import useBook from "../../contexts/useBook";
 
 function TextbookInput() {

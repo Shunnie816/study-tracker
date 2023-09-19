@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import axios from "axios";
-import { db } from "../index";
-import { doc, deleteDoc } from "firebase/firestore";
+// import { db } from "../index";
+// import { doc, deleteDoc } from "firebase/firestore";
 
 function SimpleDialog(props) {
   const { onClose, open } = props;
@@ -21,8 +21,8 @@ function SimpleDialog(props) {
       handleClose();
     });
 
-    await deleteDoc(doc(db, "posts", id));
-    handleClose();
+    // await deleteDoc(doc(db, "posts", id));
+    // handleClose();
   };
 
   const post = props.data;
@@ -50,7 +50,7 @@ function SimpleDialog(props) {
 }
 
 function DeleteDialog(props) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
