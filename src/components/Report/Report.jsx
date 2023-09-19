@@ -5,12 +5,20 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-import { Time, Textbook, TextInput, db } from "../index";
+import { Time, Textbook, TextInput } from "../index";
 import "../../index.css";
 import axios from "axios";
+import useBook from "../../contexts/useBook";
 // import { collection, addDoc } from "firebase/firestore";
 
-function BoxSx(props) {
+function Report(props) {
+  //グローバルなstateの取得
+  const { bookId, setBookId } = useBook();
+
+  //ローカルなstateの定義
+  const [time, setTime] = useState("");
+  const [studyContent, setStudyContent] = useState("");
+
   // バリデーションチェック用のメソッド
   const useFormMethods = useForm();
   const { handleSubmit } = useFormMethods;
@@ -30,9 +38,7 @@ function BoxSx(props) {
     const minute = today.getMinutes();
 
     // データベースのpostにデータを入れる
-    const time = props.time;
-    const content = props.content;
-    const bookId = props.bookId;
+    const content = studyContent;
 
     axios
       .post("http://localhost:3001/posts", {
@@ -51,9 +57,9 @@ function BoxSx(props) {
         // event.preventDefault();
       });
     // 初期値に戻す
-    props.onSelect("");
-    props.inputContent("");
-    props.setId("");
+    setTime("");
+    setStudyContent("");
+    setBookId("");
 
     // firestoreへデータを追加
     // await addDoc(collection(db, "posts"), {
@@ -69,9 +75,9 @@ function BoxSx(props) {
     // setAlert(true);
     // setOpen(true);
     // 初期値に戻す
-    // props.onSelect("");
-    // props.inputContent("");
-    // props.setId("");
+    // setTime("");
+    // setStudyContent("");
+    //setBookId("");
   };
 
   return (
@@ -97,16 +103,11 @@ function BoxSx(props) {
           }}
         >
           <FormProvider {...useFormMethods}>
-            <Time time={props.time} onSelect={props.onSelect} />
-            <Textbook
-              data={props.data}
-              setData={props.setData}
-              bookId={props.bookId}
-              setId={props.setId}
-            />
+            <Time time={time} setTime={setTime} />
+            <Textbook />
             <TextInput
-              content={props.content}
-              inputContent={props.inputContent}
+              studyContent={studyContent}
+              setStudyContent={setStudyContent}
             />
             {alert && open ? (
               <Alert
@@ -133,4 +134,4 @@ function BoxSx(props) {
   );
 }
 
-export default BoxSx;
+export default Report;

@@ -8,13 +8,15 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Select from "@mui/material/Select";
 
 function TimeSelect(props) {
+  const { time, setTime } = props;
+
   const {
     register,
     formState: { errors },
   } = useFormContext();
 
   const handleChange = (event) => {
-    props.onSelect(event.target.value);
+    setTime(event.target.value);
   };
 
   // 時間の候補を格納する配列
@@ -31,7 +33,7 @@ function TimeSelect(props) {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={props.time}
+            value={time}
             label="学習時間"
             onChange={handleChange}
           >
@@ -55,7 +57,7 @@ function TimeSelect(props) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={props.time}
+              value={time}
               label="学習時間"
               onChange={handleChange}
             >

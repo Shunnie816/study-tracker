@@ -15,6 +15,10 @@
     {
       "name": "日本史",
       "id": 8
+    },
+    {
+      "name": "教材",
+      "id": 9
     }
   ],
   "posts": [
@@ -94,6 +98,17 @@
       "bookId": 1,
       "content": "アラート表示",
       "id": 7
+    },
+    {
+      "year": 2023,
+      "month": 9,
+      "day": 19,
+      "hours": 12,
+      "minute": 24,
+      "time": 25,
+      "bookId": 6,
+      "content": "ｄｄｄｄ",
+      "id": 8
     }
   ]
 }

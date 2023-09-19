@@ -4,13 +4,15 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
 function TextInput(props) {
+  const { studyContent, setStudyContent } = props;
+
   const {
     register,
     formState: { errors },
   } = useFormContext();
 
   const handleChange = (event) => {
-    props.inputContent(event.target.value);
+    setStudyContent(event.target.value);
   };
 
   return (
@@ -28,7 +30,7 @@ function TextInput(props) {
           label="学習内容を入力"
           variant="outlined"
           onInput={handleChange}
-          value={props.content}
+          value={studyContent}
           {...register("comment", {
             required: "学習内容を入力してください。",
           })}
@@ -41,7 +43,7 @@ function TextInput(props) {
             label="学習内容を入力"
             variant="outlined"
             onInput={handleChange}
-            value={props.content}
+            value={studyContent}
             helperText={errors.comment.message}
           />
         )

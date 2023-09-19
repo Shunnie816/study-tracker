@@ -11,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-import { DeleteTextbook, db } from "../index";
+import { DeleteTextbook } from "../index";
 import axios from "axios";
 // import { doc, setDoc } from "firebase/firestore";
 

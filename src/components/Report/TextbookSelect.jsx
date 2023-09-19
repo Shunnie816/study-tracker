@@ -9,16 +9,20 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Select from "@mui/material/Select";
 // import { db } from "../index";
 import axios from "axios";
+import useBook from "../../contexts/useBook";
 // import { collection, doc, getDocs, getDoc } from "firebase/firestore";
 
-function TextbookSelect(props) {
+function TextbookSelect() {
+  //グローバルなstateを取得する
+  const { bookId, setBookId, dataBook, setDataBook } = useBook();
+
   const {
     register,
     formState: { errors },
   } = useFormContext();
 
   const handleChange = (event) => {
-    props.setId(event.target.value);
+    setBookId(event.target.value);
   };
 
   // jsonから教材を取得
@@ -26,7 +30,7 @@ function TextbookSelect(props) {
     axios.get("http://localhost:3001/textbook").then((response) => {
       const dataset = response.data;
       // console.log(dataset);
-      props.setData(dataset);
+      setDataBook(dataset);
     });
   }, []);
 
@@ -42,11 +46,11 @@ function TextbookSelect(props) {
 
   //     // idとnameを持つオブジェクトとして配列textbooksにデータを格納してからステートdataに渡す(常にdataが更新されて処理が重そう)
   //     textbooks.push({ id: book.id, name: dataset.name });
-  //     props.setData(textbooks);
+  //     setDataBook(textbooks);
   //   });
   // })();
 
-  const textbookData = props.data;
+  const textbookData = dataBook;
 
   return (
     <Box sx={{ width: "80%", margin: "1.0rem 0.7rem" }}>
@@ -56,7 +60,7 @@ function TextbookSelect(props) {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={props.bookId}
+            value={bookId}
             label="教材選択"
             onChange={handleChange}
           >
@@ -81,7 +85,7 @@ function TextbookSelect(props) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={props.bookId}
+              value={bookId}
               label="教材選択"
               onChange={handleChange}
             >
